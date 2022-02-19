@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "The Solo's Manual",
+    "author": "Morgan Blackhand",
+    "url": "https://blackhands-fake-blog.org",
+    "likes": 2077
+}
