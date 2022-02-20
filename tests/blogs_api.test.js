@@ -73,17 +73,18 @@ test('blog id field is named id', async () => {
 
 
 test('new blog is added', async () => {
-	const newBlog = new Blog({
+	const newBlog = {
 		title: 'Go To Statement Considered Harmful',
 		author: 'Edsger W. Dijkstra',
 		url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-		likes: 5,
-	})
+		likes: 5
+	}
 
 	await api
 		.post('/api/blogs')
 		.send(newBlog)
 		.expect(201)
+		.expect('Content-Type', /application\/json/)
 
 	const response = await api.get('/api/blogs')
 
@@ -93,6 +94,51 @@ test('new blog is added', async () => {
 	expect(titles).toContain(
     'Go To Statement Considered Harmful'
   )
+})
+
+test('if likes is not defined it is set to zero', async () => {
+	const newBlog = {
+		title: 'Go To Statement Considered Harmful',
+		author: 'Edsger W. Dijkstra',
+		url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html'
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(newBlog)
+		.expect(201)
+		.expect('Content-Type', /application\/json/)
+
+	const response = await api.get('/api/blogs')
+
+	const blog = response.body[initialBlogs.length]
+
+	expect(blog.likes).toBe(0)
+})
+
+test('if title is not defined return statuscode 400', async () => {
+	const newBlog = {
+		author: 'Edsger W. Dijkstra',
+		url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+		likes: 5
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(newBlog)
+		.expect(400)
+})
+
+test('if url is not defined return statuscode 400', async () => {
+	const newBlog = {
+		title: 'Go To Statement Considered Harmful',
+		author: 'Edsger W. Dijkstra'
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(newBlog)
+		.expect(400)
 })
 
 afterAll(() => {
