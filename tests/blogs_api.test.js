@@ -6,16 +6,6 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 
 beforeEach(async () => {
-	// await Blog.deleteMany({})
-	// let blogObject = new Blog(initialBlogs[0])
-	// await blogObject.save()
-	// blogObject = new Blog(initialBlogs[1])
-	// await blogObject.save()
-	// blogObject = new Blog(initialBlogs[2])
-	// await blogObject.save()
-	// blogObject = new Blog(initialBlogs[3])
-	// await blogObject.save()
-
 	await Blog.deleteMany({})
 
   const blogObjects = helper.initialBlogs
